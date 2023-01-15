@@ -52,20 +52,41 @@ function renderOneToy(toy){
     card.append(button);
 };
 
-// add toy card to DOM
-
-    
-    // toyCard.setAttribute("class", "card");
-    // toyCard.setAttribute("id", toy.id);
-    // toyCard.innerHTML = '___'
+//
 
 
 
 //### Add a New Toy
 //post request
+// function getAllToys(){
+//     fetch('http://localhost:3000/toys')
+//     .then(response => response.json())
+//     .then(toyData => toyData.forEach(toy => renderOneToy(toy)))
+// //    .then(toyData => toyData.forEach(toy => renderOneToy(toy)));
+// };
+// function newToy(){
+//     fetch('http://localhost:3000/toys', {
+//     method: 'POST',
+//     headers: {
+//         "Content-Type": "application/json",
+//         Accept: "application/json"
+//     },
+//     body: JSON.stringify({
+//         "name": "Jessie",
+//         "image": "https://vignette.wikia.nocookie.net/p__/images/8/88/Jessie_Toy_Story_3.png/revision/latest?cb=20161023024601&path-prefix=protagonist",
+//         "likes": 0}
+//     ),
+//   }
+//     .then((response) => response.json())
+//     .then((data) => {
+//       console.log('Success:', data);
+//     })
+//     .catch((error) => {
+//       console.error('Error:', error);
+//     })
+
 
 //### Patch request
-
 //event listener for submit event
 //document.getElementById("submit").addEventListener("click", function (event) {
     // event.preventDefault();
