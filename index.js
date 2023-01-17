@@ -1,7 +1,16 @@
 
 
 //###Fetch Andy's toys
-//get request
+
+// 1) fetch request
+// 2) render to dom
+// 3) submit form addEventListener 
+// 4) post request for submit
+// 5) click addEventListener
+// 6) patch request for like clicks
+
+
+//GET REQUEST FETCH
 function getAllToys(){
     fetch('http://localhost:3000/toys')
     .then(response => response.json())
@@ -38,8 +47,8 @@ function renderOneToy(toy){
     button.addEventListener("click", () => {
         toy.likes += 1;
         p.textContent = `${toy.likes} likes`;
-        updateLikes(toy)});
-    card.appendChild(h2);
+        updateLikes(toy, p)});
+    card.append(h2);
     card.append(image);
     card.append(p);
     card.append(button);
@@ -48,6 +57,21 @@ function renderOneToy(toy){
 
 //  
 
+function handleNewToy(){
+    const form = document.querySelector('#add-toy-form')
+    form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const nameInput = event.target.name.value
+        const imageInput = event.target.image.value
+
+        const newObj = {
+            name: nameInput,
+            image: imageInput,
+            likes: 0
+        }
+        renderOneToy([newObj])
+
+    })}
 
 
 //### Add a New Toy
@@ -60,19 +84,31 @@ function addNewToy(newToy){
         "Accept": "application/json"
     },
     body: JSON.stringify(newToy)
-    })}
+    .then(response => response.json())
+    .then(newToy => renderOneToy([newToy]))
+});
+}
+
+
+//addNewToy();    
   //.then(response => response.json().then(toy => renderOneToy(toy)))};
 
+//event listern submit event
+
   //PATCH REQUEST
-  function updateLikes(newToy){
-    fetch(`http://localhost:3000/toys/${toy.id}`, {
+function updateLikes(newToy, p){
+   console.log(p.textContent[0]);
+    fetch(`http://localhost:3000/toys/${newToy.id}`, {
     method: 'PATCH',
     headers: {
         "Content-Type": "application/json",
         "Accept": "application/json"
     },
-    body: JSON.stringify({newToy
-      })
+    body: JSON.stringify({
+        likes: parseInt(p.textContent[0])
+      })}
+    
+)
     .then(res => res.json())
     .then(toy => console.log(toy))
-});}
+};
