@@ -35,6 +35,10 @@ function renderOneToy(toy){
     button.id = toy.id;
     button.textContent = "Like ❤️";
     button.className = "button";
+    button.addEventListener("click", () => {
+        toy.likes += 1;
+        p.textContent = `${toy.likes} likes`;
+        updateLikes(toy)});
     card.appendChild(h2);
     card.append(image);
     card.append(p);
@@ -42,7 +46,7 @@ function renderOneToy(toy){
     document.querySelector('#toy-collection').appendChild(card)
 };
 
-//
+//  
 
 
 
@@ -59,20 +63,16 @@ function addNewToy(newToy){
     })}
   //.then(response => response.json().then(toy => renderOneToy(toy)))};
 
-//event listener fpr the button
-// button.addEventListener("click", () => {
-//     toy.likes += 1})
-// console.log(button);
-
-
-//event listener form submitter
-const f = document.querySelector("form");
-f.addEventListener("submit", (e) => {
-    e.preventDefault();
-        const toy = {
-            name: e.target.name.value,
-            image: e.target.image.value,
-            likes: 0}
-        renderOneToy(toy);
-        addNewToy(toy);
-})
+  //PATCH REQUEST
+  function updateLikes(newToy){
+    fetch(`http://localhost:3000/toys/${toy.id}`, {
+    method: 'PATCH',
+    headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+    },
+    body: JSON.stringify({newToy
+      })
+    .then(res => res.json())
+    .then(toy => console.log(toy))
+});}
