@@ -1,4 +1,18 @@
+let addToy = false;
 
+document.addEventListener("DOMContentLoaded", () => {
+  const addBtn = document.querySelector("#new-toy-btn");
+  const toyFormContainer = document.querySelector(".container");
+  addBtn.addEventListener("click", () => {
+    // hide & seek with the form
+    addToy = !addToy;
+    if (addToy) {
+      toyFormContainer.style.display = "block";
+    } else {
+      toyFormContainer.style.display = "none";
+    }
+  });
+});
 
 // //###Fetch Andy's toys
 
@@ -9,106 +23,77 @@
 // // 5) click addEventListener
 // // 6) patch request for like clicks
 
+fetch('http://localhost:3000/toys')
+  .then(response => response.json())
+  .then(toyData => {renderToys(toyData);});
 
-// //GET REQUEST FETCH
-// function getAllToys(){
-//     fetch('http://localhost:3000/toys')
-//     .then(response => response.json())
-//     .then(toyData => toyData.forEach(toy => renderOneToy(toy)))
-// //    .then(toyData => toyData.forEach(toy => renderOneToy(toy)));
-// };
-// //
-// getAllToys();
+function renderToys(toys){
+  toys.forEach((toy) => {
+    const card = document.createElement("div");
+    card.className = ("card");  
+//    toyCollection = document.querySelector("#toy-collection");
+    const h2 = document.createElement("h2");
+    h2.textContent = toy.name;
+    card.append(h2)
 
-// //###Add Toy Info to the Card
-// //part of the get request i guess? when we're appending it to the html
-// // function initialize(){
-// //    getAllToys();
-// // //   newToy();
-// // };
-// // initialize();
+    const img = document.createElement("img");
+    img.className = ("toy-avatar")
+    img.src = toy.image;
+    card.append(img);
 
-// //DOM Rendering
-// function renderOneToy(toy){
-//     let card = document.createElement("div");
-//     card.className = "card";
-//     let image = document.createElement("img");
-//     image.src = toy.image
-//     image.className = "toy-avatar";
-//     let h2 = document.createElement("h2");
-//     h2.textContent = toy.name;
-//     let p = document.createElement("p");
-//     p.textContent = `${toy.likes} likes`;
-//     let button = document.createElement("button");
-//     button.className = "like-btn"
-//     button.id = toy.id;
-//     button.textContent = "Like ❤️";
-//     button.className = "button";
-//     button.addEventListener("click", () => {
-//         toy.likes += 1;
-//         p.textContent = `${toy.likes} likes`;
-//         updateLikes(toy, p)});
-//     card.append(h2);
-//     card.append(image);
-//     card.append(p);
-//     card.append(button);
-//     document.querySelector('#toy-collection').appendChild(card)
-// };
+    const p = document.createElement("p");
+    p.textContent = `${toy.likes} likes`;
+    card.append(p);
 
-// //  
+    const button = document.createElement("button");
+    button.className = ("like-btn");
+    button.id = toy.id;
+    button.textContent = "Like ❤️"
+    card.append(button);
+    button.addEventListener("click", (e) =>{
+      toy.likes ++;
+      p.textContent = `${toy.likes} likes`
+    })
 
-// function handleNewToy(){
-//     const form = document.querySelector('#add-toy-form')
-//     form.addEventListener("submit", (event) => {
-//         event.preventDefault();
-//         const nameInput = event.target.name.value
-//         const imageInput = event.target.image.value
-
-//         const newObj = {
-//             name: nameInput,
-//             image: imageInput,
-//             likes: 0
-//         }
-//         renderOneToy([newObj])
-
-//     })}
+    document.querySelector('#toy-collection').appendChild(card)
+  });
+};
 
 
-// //### Add a New Toy
-// //post request
-// function addNewToy(newToy){
-//     fetch('http://localhost:3000/toys', {
-//     method: 'POST',
-//     headers: {
-//         "Content-Type": "application/json",
-//         "Accept": "application/json"
-//     },
-//     body: JSON.stringify(newToy)
-//     .then(response => response.json())
-//     .then(newToy => renderOneToy([newToy]))
-// });
-// }
+//add event listern to form and append that information to the dom
+//33 minutes into Gehrig's demo
+function updateForm(){
+  const toyForm = document.querySelector("body > div.container > form")
+  toyForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const card = document.createElement("div");
+    card.className = ("card");
+
+    const newToyName = document.createElement("h2");
+    newToyName.textContent = e.target.name.value
+    card.append(newToyName)
+
+    const button = document.createElement("button");
+    button.className = ("like-btn");
+//    button.id = toy.id;
+    button.textContent = "Like ❤️"
+    card.append(button);
+    button.addEventListener("click", (e) =>{
+      toy.likes ++;
+      p.textContent = "0 likes";
+    })
+
+    const p = document.createElement("p");
+    p.textContent = "0 likes";
+    card.append(p);
+
+    const imageNewToy = document.createElement("img");
+    imageNewToy.src = e.target.image.value;
+    card.append(imageNewToy)
+    document.querySelector('#toy-collection').appendChild(card)
 
 
-// //addNewToy();    
-//   //.then(response => response.json().then(toy => renderOneToy(toy)))};
+  });
+};
 
-// //event listern submit event
-
-//   //PATCH REQUEST
-// function updateLikes(newToy, p){
-//    console.log(p.textContent[0]);
-//     fetch(`http://localhost:3000/toys/${newToy.id}`, {
-//     method: 'PATCH',
-//     headers: {
-//         "Content-Type": "application/json",
-//         "Accept": "application/json"
-//     },
-//     body: JSON.stringify({
-//         likes: parseInt(p.textContent[0])
-//       })}
-    
-// )
-//     .then(res => res.json())
-//     .then(toy => console.log(toy))
-// };
+updateForm(); 
